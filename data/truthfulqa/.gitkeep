@@ -1,0 +1,3 @@
+# TruthfulQA Dataset
+# Files will be downloaded here by dataset_loader.py
+# See: backend/evaluation/dataset_loader.py

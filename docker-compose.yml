@@ -1,0 +1,52 @@
+version: "3.9"
+
+# ============================================================
+# docker-compose.yml — Hallucination Detection System
+# Author: Chalani Dinitha (20211032)
+# Usage: docker-compose up --build
+# ============================================================
+
+services:
+
+  # ── Backend (FastAPI + Python) ────────────────────────────
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: hallucination_backend
+    ports:
+      - "8000:8000"
+    environment:
+      - MODEL_NAME=${MODEL_NAME:-facebook/opt-1.3b}
+      - HF_TOKEN=${HF_TOKEN:-}
+      - HALLUCINATION_THRESHOLD=${HALLUCINATION_THRESHOLD:-0.65}
+      - TARGET_LAYERS=${TARGET_LAYERS:-12,16,20}
+      - MLFLOW_TRACKING_URI=./mlruns
+      - LOG_PROMPTS=false
+    volumes:
+      - ./data:/app/data
+      - ./experiments:/app/experiments
+      - ./mlruns:/app/mlruns
+    networks:
+      - app_network
+    restart: unless-stopped
+
+  # ── Frontend (React) ──────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: hallucination_frontend
+    ports:
+      - "80:80"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000
+    depends_on:
+      - backend
+    networks:
+      - app_network
+    restart: unless-stopped
+
+networks:
+  app_network:
+    driver: bridge
