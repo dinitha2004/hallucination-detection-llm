@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; }
+  body {
+    @apply bg-slate-950 text-slate-100 font-sans;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+@layer utilities {
+  .token-safe        { @apply bg-transparent; }
+  .token-suspicious  { @apply bg-yellow-400/20 text-yellow-300 rounded px-0.5; }
+  .token-hallucinated{ @apply bg-red-500/25 text-red-300 rounded px-0.5 font-semibold
+                              ring-1 ring-red-500/40; }
+  .scrollbar-thin    { scrollbar-width: thin; scrollbar-color: #334155 transparent; }
+}
