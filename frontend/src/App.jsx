@@ -1,201 +1,82 @@
-/**
- * App.jsx — Root Application Component
- * Two-panel layout:
- *   LEFT  → QueryInput (user enters prompt)
- *   RIGHT → Results (TokenDisplay, ScorePanel, WarningBanner)
- *
- * Author: Chalani Dinitha (20211032)
- */
-
 import { useState, useEffect } from 'react'
 import { detectHallucination, getHealth } from './api/client'
-import QueryInput    from './components/QueryInput'
-import TokenDisplay  from './components/TokenDisplay'
-import ScorePanel    from './components/ScorePanel'
+import QueryInput from './components/QueryInput'
+import TokenDisplay from './components/TokenDisplay'
+import ScorePanel from './components/ScorePanel'
 import WarningBanner from './components/WarningBanner'
-import { Brain, Wifi, WifiOff } from 'lucide-react'
 
 export default function App() {
-  const [result,   setResult]   = useState(null)
-  const [loading,  setLoading]  = useState(false)
-  const [error,    setError]    = useState(null)
-  const [ready,    setReady]    = useState(false)
-  const [checking, setChecking] = useState(true)
+  const [result, setResult] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+  const [ready, setReady] = useState(false)
 
-  /* ── Check backend health on mount ── */
   useEffect(() => {
-    const check = async () => {
-      try {
-        const h = await getHealth()
-        setReady(h.pipeline_ready)
-      } catch {
-        setReady(false)
-      } finally {
-        setChecking(false)
-      }
-    }
-    check()
+    getHealth().then(h => setReady(h.pipeline_ready)).catch(() => setReady(false))
   }, [])
 
-  /* ── Submit a prompt ── */
   const handleSubmit = async (prompt, maxTokens) => {
-    setLoading(true)
-    setError(null)
-    setResult(null)
+    setLoading(true); setError(null); setResult(null)
     try {
-      const data = await detectHallucination(prompt, maxTokens)
-      setResult(data)
-    } catch (err) {
-      setError(err.response?.data?.detail || err.message || 'Detection failed')
+      setResult(await detectHallucination(prompt, maxTokens))
+    } catch(err) {
+      setError(err.message || 'Detection failed')
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
-
-      {/* ── Header ── */}
-      <header className="border-b border-slate-800 px-6 py-4 flex items-center gap-3">
-        <div className="w-8 h-8 rounded-lg bg-brand-500 flex items-center justify-center">
-          <Brain size={18} className="text-white" />
-        </div>
+    <div style={{display:'flex',flexDirection:'column',minHeight:'100vh'}}>
+      <header style={{padding:'16px 24px',borderBottom:'1px solid #1e293b',display:'flex',alignItems:'center',gap:'12px'}}>
+        <div style={{width:32,height:32,background:'#4f6ef7',borderRadius:8,display:'flex',alignItems:'center',justifyContent:'center',fontWeight:'bold',fontSize:14}}>H</div>
         <div>
-          <h1 className="text-lg font-semibold tracking-tight">HalluScan</h1>
-          <p className="text-xs text-slate-500 font-mono">
-            Fine-Grained Hallucination Detection · Chalani Dinitha
-          </p>
+          <div style={{fontWeight:600,fontSize:16}}>HalluScan</div>
+          <div style={{fontSize:11,color:'#64748b',fontFamily:'monospace'}}>Fine-Grained Hallucination Detection · Chalani Dinitha</div>
         </div>
-
-        {/* Backend status pill */}
-        <div className="ml-auto">
-          {checking ? (
-            <span className="text-xs text-slate-500 font-mono animate-pulse">
-              connecting…
-            </span>
-          ) : ready ? (
-            <span className="flex items-center gap-1.5 text-xs text-safe-400 font-mono">
-              <Wifi size={12} /> API ready
-            </span>
-          ) : (
-            <span className="flex items-center gap-1.5 text-xs text-danger-400 font-mono">
-              <WifiOff size={12} /> API offline
-            </span>
-          )}
+        <div style={{marginLeft:'auto',fontSize:12,fontFamily:'monospace',color:ready?'#34d399':'#f87171'}}>
+          {ready ? '● API ready' : '● API offline'}
         </div>
       </header>
-
-      {/* ── Main two-panel layout ── */}
-      <div className="flex flex-1 overflow-hidden">
-
-        {/* LEFT PANEL — Query Input */}
-        <aside className="w-96 border-r border-slate-800 flex flex-col p-6 gap-6 overflow-y-auto scrollbar-thin">
-          <QueryInput
-            onSubmit={handleSubmit}
-            loading={loading}
-            disabled={!ready && !checking}
-          />
-
-          {/* Config reminder */}
-          <div className="rounded-xl border border-slate-800 p-4 bg-slate-900/50">
-            <p className="text-xs text-slate-500 font-mono leading-relaxed">
-              Threshold: 0.65 · Suspicious: 0.45<br/>
-              Weights: 0.4 entropy · 0.4 wass · 0.2 tsv<br/>
-              Layers: [18, 20, 22]
-            </p>
+      <div style={{display:'flex',flex:1,overflow:'hidden'}}>
+        <aside style={{width:380,borderRight:'1px solid #1e293b',padding:24,overflowY:'auto',display:'flex',flexDirection:'column',gap:20}}>
+          <QueryInput onSubmit={handleSubmit} loading={loading} disabled={!ready} />
+          <div style={{background:'#0f172a',border:'1px solid #1e293b',borderRadius:12,padding:16,fontSize:12,fontFamily:'monospace',color:'#475569',lineHeight:1.8}}>
+            Threshold: 0.65 · Suspicious: 0.45<br/>
+            Weights: 0.4×entropy + 0.4×wass + 0.2×tsv<br/>
+            Layers: [18, 20, 22] · Model: OPT-1.3B
           </div>
-
-          {/* Legend */}
-          <div className="space-y-2">
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-              Risk Legend
-            </p>
-            <div className="space-y-1.5 text-sm font-mono">
-              <div className="flex items-center gap-2">
-                <span className="token-hallucinated text-xs">TOKEN</span>
-                <span className="text-slate-400 text-xs">Hallucinated (score ≥ 0.65)</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="token-suspicious text-xs">TOKEN</span>
-                <span className="text-slate-400 text-xs">Suspicious (0.45–0.65)</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-slate-300 text-xs border border-slate-700 px-0.5 rounded">
-                  TOKEN
-                </span>
-                <span className="text-slate-400 text-xs">Safe (score &lt; 0.45)</span>
-              </div>
+          <div>
+            <div style={{fontSize:11,fontWeight:600,color:'#64748b',textTransform:'uppercase',letterSpacing:1,marginBottom:8}}>Legend</div>
+            <div style={{display:'flex',flexDirection:'column',gap:6,fontSize:12,fontFamily:'monospace'}}>
+              <div style={{display:'flex',alignItems:'center',gap:8}}><span style={{background:'rgba(239,68,68,0.2)',color:'#fca5a5',padding:'1px 6px',borderRadius:4,outline:'1px solid rgba(239,68,68,0.4)'}}>TOKEN</span><span style={{color:'#64748b'}}>Hallucinated (≥0.65)</span></div>
+              <div style={{display:'flex',alignItems:'center',gap:8}}><span style={{background:'rgba(250,204,21,0.2)',color:'#fde047',padding:'1px 6px',borderRadius:4}}>TOKEN</span><span style={{color:'#64748b'}}>Suspicious (0.45–0.65)</span></div>
+              <div style={{display:'flex',alignItems:'center',gap:8}}><span style={{border:'1px solid #334155',padding:'1px 6px',borderRadius:4,color:'#cbd5e1'}}>TOKEN</span><span style={{color:'#64748b'}}>Safe (&lt;0.45)</span></div>
             </div>
           </div>
         </aside>
-
-        {/* RIGHT PANEL — Results */}
-        <main className="flex-1 flex flex-col overflow-y-auto scrollbar-thin p-6 gap-6">
-
-          {/* Not ready state */}
-          {!checking && !ready && (
-            <div className="flex-1 flex items-center justify-center">
-              <div className="text-center space-y-3">
-                <WifiOff size={40} className="text-slate-600 mx-auto" />
-                <p className="text-slate-400 font-mono text-sm">
-                  Backend not reachable
-                </p>
-                <p className="text-slate-600 text-xs font-mono">
-                  Run: uvicorn backend.main:app --reload --port 8000
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* Empty state */}
-          {ready && !loading && !result && !error && (
-            <div className="flex-1 flex items-center justify-center">
-              <div className="text-center space-y-3 max-w-sm">
-                <Brain size={48} className="text-slate-700 mx-auto" />
-                <p className="text-slate-400 font-mono text-sm">
-                  Enter a prompt to analyse hallucination signals
-                </p>
-                <p className="text-slate-600 text-xs font-mono">
-                  Try: "The capital of France is" or<br/>
-                  "Einstein was born in 1879 in Germany"
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* Loading state */}
-          {loading && (
-            <div className="flex-1 flex items-center justify-center">
-              <div className="text-center space-y-4">
-                <div className="w-10 h-10 border-2 border-brand-500 border-t-transparent
-                                rounded-full animate-spin mx-auto" />
-                <p className="text-slate-400 font-mono text-sm animate-pulse">
-                  Analysing hidden states…
-                </p>
-                <p className="text-slate-600 text-xs font-mono">
-                  Running pipeline: EAT → Hidden States → Shift → Score
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* Error state */}
-          {error && (
-            <div className="rounded-xl border border-danger-500/30 bg-danger-500/10 p-4">
-              <p className="text-danger-400 font-mono text-sm">{error}</p>
-            </div>
-          )}
-
-          {/* Results */}
-          {result && !loading && (
-            <>
-              {result.hallucination_detected && (
-                <WarningBanner result={result} />
-              )}
-              <TokenDisplay result={result} />
-              <ScorePanel result={result} />
-            </>
-          )}
+        <main style={{flex:1,padding:24,overflowY:'auto',display:'flex',flexDirection:'column',gap:20}}>
+          {!ready && <div style={{flex:1,display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',gap:12,color:'#475569',fontFamily:'monospace',fontSize:14}}>
+            <div style={{fontSize:32}}>⚠</div>
+            <div>Backend not reachable</div>
+            <div style={{fontSize:11,color:'#334155'}}>Run: uvicorn backend.main:app --reload --port 8000</div>
+          </div>}
+          {ready && !loading && !result && !error && <div style={{flex:1,display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',gap:12,color:'#475569',fontFamily:'monospace',fontSize:14,textAlign:'center'}}>
+            <div style={{fontSize:48}}>🧠</div>
+            <div>Enter a prompt to analyse hallucination signals</div>
+            <div style={{fontSize:11,color:'#334155'}}>Try: "The capital of France is"</div>
+          </div>}
+          {loading && <div style={{flex:1,display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',gap:16}}>
+            <div style={{width:40,height:40,border:'3px solid #4f6ef7',borderTopColor:'transparent',borderRadius:'50%',animation:'spin 1s linear infinite'}} />
+            <div style={{color:'#64748b',fontFamily:'monospace',fontSize:14}}>Analysing hidden states…</div>
+            <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
+          </div>}
+          {error && <div style={{background:'rgba(239,68,68,0.1)',border:'1px solid rgba(239,68,68,0.3)',borderRadius:12,padding:16,color:'#f87171',fontFamily:'monospace',fontSize:13}}>{error}</div>}
+          {result && !loading && <>
+            {result.hallucination_detected && <WarningBanner result={result} />}
+            <TokenDisplay result={result} />
+            <ScorePanel result={result} />
+          </>}
         </main>
       </div>
     </div>

@@ -1,121 +1,41 @@
-/**
- * TokenDisplay.jsx — Token-Level Highlighting Component
- * This is the CORE visual output of your research (Gap 2).
- *
- * Renders each token with colour coding:
- *   RED    = hallucinated EAT token (score ≥ 0.65)
- *   YELLOW = suspicious EAT token   (score 0.45–0.65)
- *   NORMAL = safe token
- *
- * Hover over any token to see its score as a tooltip.
- *
- * Author: Chalani Dinitha (20211032)
- */
-
 import { useState } from 'react'
-
-function getRiskClass(token) {
-  if (token.is_flagged)                              return 'token-hallucinated cursor-help'
-  if (token.risk_level === 'suspicious' && token.is_eat) return 'token-suspicious cursor-help'
-  return 'token-safe text-slate-200'
-}
-
-function TokenChip({ token }) {
+function Token({ t }) {
   const [show, setShow] = useState(false)
-  const cls = getRiskClass(token)
-  const hasInfo = token.is_eat || token.hallucination_score > 0.1
-
+  const style = t.is_flagged
+    ? {background:'rgba(239,68,68,0.2)',color:'#fca5a5',borderRadius:4,padding:'0 2px',fontWeight:600,outline:'1px solid rgba(239,68,68,0.4)',cursor:'help'}
+    : t.risk_level==='suspicious' && t.is_eat
+    ? {background:'rgba(250,204,21,0.2)',color:'#fde047',borderRadius:4,padding:'0 2px',cursor:'help'}
+    : {color:'#cbd5e1'}
   return (
-    <span className="relative inline-block">
-      <span
-        className={`font-mono text-sm ${cls} whitespace-pre-wrap`}
-        onMouseEnter={() => hasInfo && setShow(true)}
-        onMouseLeave={() => setShow(false)}
-      >
-        {token.token}
-      </span>
-
-      {/* Tooltip */}
-      {show && (
-        <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 z-50
-                          whitespace-nowrap rounded-lg border border-slate-700
-                          bg-slate-900 px-2.5 py-1.5 text-xs font-mono
-                          shadow-xl pointer-events-none">
-          <span className="block text-slate-300">
-            score: <span className={
-              token.hallucination_score >= 0.65 ? 'text-red-400 font-semibold' :
-              token.hallucination_score >= 0.45 ? 'text-yellow-400' :
-              'text-green-400'
-            }>
-              {token.hallucination_score.toFixed(3)}
-            </span>
-          </span>
-          {token.is_eat && (
-            <span className="block text-brand-400">
-              EAT · {token.entity_type || 'entity'}
-            </span>
-          )}
-          <span className="block text-slate-500">{token.risk_level}</span>
-        </span>
-      )}
+    <span style={{position:'relative',display:'inline'}}>
+      <span style={{fontFamily:'monospace',fontSize:14,whiteSpace:'pre-wrap',...style}} onMouseEnter={()=>t.is_eat&&setShow(true)} onMouseLeave={()=>setShow(false)}>{t.token}</span>
+      {show && <span style={{position:'absolute',bottom:'100%',left:'50%',transform:'translateX(-50%)',background:'#1e293b',border:'1px solid #334155',borderRadius:8,padding:'6px 10px',fontSize:11,fontFamily:'monospace',whiteSpace:'nowrap',zIndex:50,boxShadow:'0 4px 20px rgba(0,0,0,0.5)'}}>
+        <span style={{display:'block',color:'#94a3b8'}}>score: <span style={{color:t.hallucination_score>=0.65?'#f87171':t.hallucination_score>=0.45?'#fbbf24':'#34d399',fontWeight:600}}>{t.hallucination_score.toFixed(3)}</span></span>
+        {t.is_eat && <span style={{display:'block',color:'#818cf8'}}>EAT · {t.entity_type||'entity'}</span>}
+        <span style={{display:'block',color:'#475569'}}>{t.risk_level}</span>
+      </span>}
     </span>
   )
 }
-
 export default function TokenDisplay({ result }) {
   if (!result) return null
-
   return (
-    <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-5 space-y-4">
-      <div className="flex items-center justify-between">
-        <h2 className="text-sm font-semibold text-slate-300 uppercase tracking-wider">
-          Generated Response
-        </h2>
-        <div className="flex items-center gap-3 text-xs font-mono text-slate-500">
-          <span>{result.annotated_tokens.length} tokens</span>
-          <span>·</span>
-          <span>{result.num_eat_tokens} EATs</span>
-          <span>·</span>
-          <span>{result.processing_time_ms.toFixed(0)}ms</span>
-        </div>
+    <div style={{background:'rgba(15,23,42,0.6)',border:'1px solid #1e293b',borderRadius:16,padding:20}}>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16}}>
+        <div style={{fontSize:12,fontWeight:600,color:'#94a3b8',textTransform:'uppercase',letterSpacing:1}}>Generated Response</div>
+        <div style={{fontSize:11,fontFamily:'monospace',color:'#475569'}}>{result.annotated_tokens.length} tokens · {result.num_eat_tokens} EATs · {result.processing_time_ms.toFixed(0)}ms</div>
       </div>
-
-      {/* Token rendering — Gap 2 visualisation */}
-      <div className="leading-8 tracking-wide">
-        {result.annotated_tokens.map((token, i) => (
-          <TokenChip key={i} token={token} />
-        ))}
-      </div>
-
-      {/* EAT summary */}
-      {result.num_eat_tokens > 0 && (
-        <div className="pt-2 border-t border-slate-800">
-          <p className="text-xs font-mono text-slate-500 mb-1.5">
-            Exact Answer Tokens detected:
-          </p>
-          <div className="flex flex-wrap gap-1.5">
-            {result.annotated_tokens
-              .filter(t => t.is_eat)
-              .map((t, i) => (
-                <span
-                  key={i}
-                  className={`text-xs font-mono px-2 py-0.5 rounded-md border ${
-                    t.is_flagged
-                      ? 'border-red-500/40 bg-red-500/10 text-red-400'
-                      : t.risk_level === 'suspicious'
-                      ? 'border-yellow-500/40 bg-yellow-500/10 text-yellow-400'
-                      : 'border-slate-700 bg-slate-800 text-slate-400'
-                  }`}
-                >
-                  {t.token.trim() || '∅'}
-                  {t.entity_type && (
-                    <span className="ml-1 opacity-60">{t.entity_type}</span>
-                  )}
-                </span>
-              ))}
-          </div>
+      <div style={{lineHeight:2.2}}>{result.annotated_tokens.map((t,i)=><Token key={i} t={t}/>)}</div>
+      {result.num_eat_tokens>0 && <div style={{marginTop:16,paddingTop:16,borderTop:'1px solid #1e293b'}}>
+        <div style={{fontSize:11,fontFamily:'monospace',color:'#475569',marginBottom:8}}>EAT tokens detected:</div>
+        <div style={{display:'flex',flexWrap:'wrap',gap:6}}>
+          {result.annotated_tokens.filter(t=>t.is_eat).map((t,i)=>(
+            <span key={i} style={{fontSize:11,fontFamily:'monospace',padding:'2px 8px',borderRadius:6,border:`1px solid ${t.is_flagged?'rgba(239,68,68,0.4)':t.risk_level==='suspicious'?'rgba(250,204,21,0.4)':'#334155'}`,background:t.is_flagged?'rgba(239,68,68,0.1)':t.risk_level==='suspicious'?'rgba(250,204,21,0.1)':'#0f172a',color:t.is_flagged?'#f87171':t.risk_level==='suspicious'?'#fbbf24':'#64748b'}}>
+              {t.token.trim()||'∅'} {t.entity_type&&<span style={{opacity:0.6}}>{t.entity_type}</span>}
+            </span>
+          ))}
         </div>
-      )}
+      </div>}
     </div>
   )
 }
