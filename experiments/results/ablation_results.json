@@ -1,0 +1,78 @@
+{
+  "study": "4-Condition Ablation Study",
+  "author": "Chalani Dinitha (20211032)",
+  "conditions": [
+    {
+      "condition": {
+        "name": "full_system",
+        "label": "Full System\n(A+B+C+D)",
+        "use_tsv": true,
+        "use_eat_filter": true,
+        "use_feature_clipping": true,
+        "description": "All components active \u2014 baseline"
+      },
+      "avg_precision": 0.0,
+      "avg_recall": 0.0,
+      "avg_f1": 0.0,
+      "avg_accuracy": 0.795,
+      "span_hit_rate": 0.0,
+      "detection_rate": 0.0,
+      "avg_latency_ms": 1745.1,
+      "n_samples": 817
+    },
+    {
+      "condition": {
+        "name": "no_tsv",
+        "label": "No TSV\n(A+B+C_no_tsv+D)",
+        "use_tsv": false,
+        "use_eat_filter": true,
+        "use_feature_clipping": true,
+        "description": "Truthfulness Separator Vector removed"
+      },
+      "avg_precision": 0.0,
+      "avg_recall": 0.0,
+      "avg_f1": 0.0,
+      "avg_accuracy": 0.795,
+      "span_hit_rate": 0.0,
+      "detection_rate": 0.0,
+      "avg_latency_ms": 2578.2,
+      "n_samples": 817
+    },
+    {
+      "condition": {
+        "name": "no_eat_filter",
+        "label": "No EAT Filter\n(all tokens)",
+        "use_tsv": true,
+        "use_eat_filter": false,
+        "use_feature_clipping": true,
+        "description": "All tokens scored, not just EATs"
+      },
+      "avg_precision": 0.0,
+      "avg_recall": 0.0,
+      "avg_f1": 0.0,
+      "avg_accuracy": 0.795,
+      "span_hit_rate": 0.0,
+      "detection_rate": 0.0,
+      "avg_latency_ms": 1937.3,
+      "n_samples": 817
+    },
+    {
+      "condition": {
+        "name": "no_feature_clipping",
+        "label": "No Feat Clip\n(A+B_no_clip+D)",
+        "use_tsv": true,
+        "use_eat_filter": true,
+        "use_feature_clipping": false,
+        "description": "INSIDE feature clipping removed"
+      },
+      "avg_precision": 0.0,
+      "avg_recall": 0.0,
+      "avg_f1": 0.0,
+      "avg_accuracy": 0.795,
+      "span_hit_rate": 0.0,
+      "detection_rate": 0.0,
+      "avg_latency_ms": 2067.3,
+      "n_samples": 817
+    }
+  ]
+}
