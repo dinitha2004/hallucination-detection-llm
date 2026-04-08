@@ -341,7 +341,7 @@ if __name__ == "__main__":
 
     # Uncomment to run with real model (~3 hours total)
     # print("Loading pipeline...")
-    # evaluator.initialize_pipeline()
+    evaluator.initialize_pipeline()
 
     print("Running evaluation (200 TruthfulQA + 100 TriviaQA)...")
     print("NOTE: Add evaluator.initialize_pipeline() for real results\n")
