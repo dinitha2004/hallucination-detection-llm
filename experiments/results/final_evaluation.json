@@ -1,0 +1,42 @@
+{
+  "evaluation": "Full Benchmark",
+  "author": "Chalani Dinitha (20211032)",
+  "model": "facebook/opt-1.3b",
+  "threshold": 0.35,
+  "results": [
+    {
+      "dataset": "TruthfulQA",
+      "n_samples": 200,
+      "macro_precision": 0.0785,
+      "macro_recall": 0.0426,
+      "macro_f1": 0.0441,
+      "micro_precision": 0.2162,
+      "micro_recall": 0.0493,
+      "micro_f1": 0.0803,
+      "avg_accuracy": 0.7733,
+      "span_hit_rate": 0.03,
+      "detection_rate": 0.285,
+      "avg_latency_ms": 1975.6,
+      "total_tp": 48,
+      "total_fp": 174,
+      "total_fn": 925
+    },
+    {
+      "dataset": "TriviaQA",
+      "n_samples": 100,
+      "macro_precision": 0.0,
+      "macro_recall": 0.0,
+      "macro_f1": 0.0,
+      "micro_precision": 0.0,
+      "micro_recall": 0.0,
+      "micro_f1": 0.0,
+      "avg_accuracy": 0.8862,
+      "span_hit_rate": 0.0,
+      "detection_rate": 0.67,
+      "avg_latency_ms": 2162.2,
+      "total_tp": 0,
+      "total_fp": 289,
+      "total_fn": 0
+    }
+  ]
+}
