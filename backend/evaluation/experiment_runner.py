@@ -8,7 +8,7 @@ What is MLflow?
 MLflow is a tool that tracks your experiments like a lab notebook.
 Every time you run an experiment with different settings, MLflow
 records:
-  - Parameters: threshold=0.65, layers=[18,20,22]
+  - Parameters: threshold=0.35, layers=[18,20,22]
   - Metrics:    precision=0.78, recall=0.72, F1=0.75
   - Artifacts:  results JSON file
 
@@ -85,7 +85,8 @@ class ExperimentRunner:
         runner = ExperimentRunner()
         runner.initialize_pipeline()
         config = ExperimentConfig(n_samples=50)
-        results = runner.run_experiment(config)
+        runner.initialize_pipeline()
+    results = runner.run_experiment(config)
     """
 
     def __init__(self):
@@ -446,8 +447,8 @@ if __name__ == "__main__":
     config = ExperimentConfig(
         experiment_name="hallucination_detection_baseline",
         dataset="truthfulqa",
-        n_samples=10,       # Small for fast test
-        threshold=0.65,
+        n_samples=817,      # Full TruthfulQA dataset
+        threshold=0.35,
         description="Day 18 baseline test"
     )
 
@@ -462,6 +463,7 @@ if __name__ == "__main__":
         print("MLflow not installed — run: pip install mlflow")
         print("Results will still be saved to JSON\n")
 
+    runner.initialize_pipeline()
     results = runner.run_experiment(config)
 
     print(f"\nResults saved: experiments/results/hallucination_detection_baseline.json")
