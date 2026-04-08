@@ -14,11 +14,11 @@
       "avg_precision": 0.0,
       "avg_recall": 0.0,
       "avg_f1": 0.0,
-      "avg_accuracy": 1.0,
+      "avg_accuracy": 0.795,
       "span_hit_rate": 0.0,
       "detection_rate": 0.0,
-      "avg_latency_ms": 0.0,
-      "n_samples": 10
+      "avg_latency_ms": 1745.1,
+      "n_samples": 817
     },
     {
       "condition": {
@@ -32,11 +32,11 @@
       "avg_precision": 0.0,
       "avg_recall": 0.0,
       "avg_f1": 0.0,
-      "avg_accuracy": 1.0,
+      "avg_accuracy": 0.795,
       "span_hit_rate": 0.0,
       "detection_rate": 0.0,
-      "avg_latency_ms": 0.0,
-      "n_samples": 10
+      "avg_latency_ms": 2578.2,
+      "n_samples": 817
     },
     {
       "condition": {
@@ -50,11 +50,11 @@
       "avg_precision": 0.0,
       "avg_recall": 0.0,
       "avg_f1": 0.0,
-      "avg_accuracy": 1.0,
+      "avg_accuracy": 0.795,
       "span_hit_rate": 0.0,
       "detection_rate": 0.0,
-      "avg_latency_ms": 0.0,
-      "n_samples": 10
+      "avg_latency_ms": 1937.3,
+      "n_samples": 817
     },
     {
       "condition": {
@@ -68,11 +68,11 @@
       "avg_precision": 0.0,
       "avg_recall": 0.0,
       "avg_f1": 0.0,
-      "avg_accuracy": 1.0,
+      "avg_accuracy": 0.795,
       "span_hit_rate": 0.0,
       "detection_rate": 0.0,
-      "avg_latency_ms": 0.0,
-      "n_samples": 10
+      "avg_latency_ms": 2067.3,
+      "n_samples": 817
     }
   ]
 }
