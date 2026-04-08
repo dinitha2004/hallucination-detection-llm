@@ -1,0 +1,62 @@
+Git Commit History — HalluScan
+Author: Chalani Dinitha (20211032)
+Generated: 2026-04-08 20:55
+============================================================
+
+cff876c research(results): complete benchmark evaluation TruthfulQA+TriviaQA
+88f15ab chore(day25): add Day 25 git commands script
+d862714 research(eval): add full benchmark evaluator for TruthfulQA + TriviaQA
+0ee4b63 research(results): real evaluation results + ablation study
+8cf0ee5 research(results): complete TruthfulQA evaluation n=817
+b7489ba research(results): add ablation study chart and results
+5c2eec6 chore(day22): add Day 22 git commands script
+32248c7 docs: add CONTRIBUTING.md with branching and commit conventions
+a542add docs: add complete API reference with request/response examples
+3f05b5e chore(day21): add Day 21 git commands script
+fd630be research(ablation): run 4-condition ablation study on TruthfulQA
+bddd5d6 test(pipeline): integration tests covering NFR1, NFR4, FR8, FR9
+6b93d82 research(results): add baseline experiment results from MLflow run
+d26b282 chore(day18): add Day 18 git commands script
+448fa66 feat(eval): add MLflow experiment runner with parameter and metric logging
+3849155 chore(day17): add Day 17 git commands script
+ba71861 feat(eval): implement token-level and span-level evaluation metrics
+208dc9c chore(day16): add Day 16 git commands script
+b6ea476 feat(eval): add TruthfulQA and TriviaQA dataset loaders
+211d2d1 chore: ignore Vite cache folder
+bc8de12 chore(day15): add Day 15 git commands script
+8bea1fc feat(frontend): update App with tabs, config panel, experiment log
+4330cf1 feat(frontend): add ConfigPanel and ExperimentLog components
+850cc24 feat(frontend+api): complete React frontend and FastAPI server
+d548ba0 chore(day13): add Day 13 git commands script
+38c8175 feat(frontend): add all UI components
+0749c66 feat(frontend): add app entry, global styles, API client, layout
+7486a2a chore(day11): add Day 11 git commands script
+498e6ff test(pipeline): add pipeline unit tests
+5a6ff0b feat(pipeline): implement full detection pipeline orchestrator
+922be95 chore(day10): add Day 10 git commands script
+80496de test(module-d): add span-level mapper tests + end-to-end pipeline test
+43fe4ac feat(module-d): implement span-level mapper and output renderer
+2a5ff5e chore(day9): add Day 9 git commands script
+50bba40 test(module-d): add unit tests for scoring engine
+bcb690f feat(module-d): implement semantic entropy and score aggregation
+9c1ec1f chore(day8): add Day 8 git commands script
+4a5d061 test(module-c): add unit tests for TSV trainer
+1675141 feat(module-c): implement TSV training and latent space steering
+0b62fa3 chore(day7): add Day 7 git commands script
+8ee7688 test(module-c): add unit tests for HalluShift analyzer
+6309df9 feat(module-c): implement HalluShift distribution shift analyzer
+be4bae1 research(results): add layer selection experiment results
+1d31f8e chore: add all daily git command scripts and update env example
+ca76310 test(module-a): add unit tests for EAT detection
+5a934f4 feat(module-a): implement EAT detection using spaCy NER
+e97024f test(module-b): add integration tests for full Module B pipeline
+0437145 feat(eval): add layer selection experiment for TruthfulQA prompts
+5ce4638 test(module-b): add comprehensive unit tests for hidden state extraction
+52cd451 feat(module-b): implement hidden state extraction with TBG probing
+a064efa chore(day3): add Day 3 git commands script
+b4cd188 feat(llm): add Day 3 inference engine test with token logging
+7e2e54e chore(config): update env example to use opt-1.3b as default model
+2f091a3 test(llm): add unit tests for ModelLoader and GenerationResult
+13fd4fa feat(llm): add InferenceEngine for token generation and hidden state capture
+f8060ed feat(llm): add ModelLoader class with hidden state output enabled
+e5ae98f chore(setup): initial project structure, config, and documentation

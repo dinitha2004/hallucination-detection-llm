@@ -1,0 +1,171 @@
+{
+  "prompt": "Napoleon Bonaparte was born in the year 1804 in Paris, France",
+  "generated_text": ". He was the son of a wealthy merchant and a wealthy woman. He was the grandson of Napoleon",
+  "overall_risk": 0.4439,
+  "hallucination_detected": false,
+  "num_eat_tokens": 1,
+  "num_flagged": 0,
+  "processing_time_ms": 4250.0,
+  "annotated_tokens": [
+    {
+      "token": ".",
+      "position": 0,
+      "hallucination_score": 0.3735,
+      "risk_level": "safe",
+      "is_eat": false,
+      "is_flagged": false
+    },
+    {
+      "token": " He",
+      "position": 1,
+      "hallucination_score": 0.2287,
+      "risk_level": "safe",
+      "is_eat": false,
+      "is_flagged": false
+    },
+    {
+      "token": " was",
+      "position": 2,
+      "hallucination_score": 0.3464,
+      "risk_level": "safe",
+      "is_eat": false,
+      "is_flagged": false
+    },
+    {
+      "token": " the",
+      "position": 3,
+      "hallucination_score": 0.3629,
+      "risk_level": "safe",
+      "is_eat": false,
+      "is_flagged": false
+    },
+    {
+      "token": " son",
+      "position": 4,
+      "hallucination_score": 0.4439,
+      "risk_level": "safe",
+      "is_eat": false,
+      "is_flagged": false
+    },
+    {
+      "token": " of",
+      "position": 5,
+      "hallucination_score": 0.4209,
+      "risk_level": "safe",
+      "is_eat": false,
+      "is_flagged": false
+    },
+    {
+      "token": " a",
+      "position": 6,
+      "hallucination_score": 0.3472,
+      "risk_level": "safe",
+      "is_eat": false,
+      "is_flagged": false
+    },
+    {
+      "token": " wealthy",
+      "position": 7,
+      "hallucination_score": 0.3631,
+      "risk_level": "safe",
+      "is_eat": false,
+      "is_flagged": false
+    },
+    {
+      "token": " merchant",
+      "position": 8,
+      "hallucination_score": 0.4249,
+      "risk_level": "safe",
+      "is_eat": false,
+      "is_flagged": false
+    },
+    {
+      "token": " and",
+      "position": 9,
+      "hallucination_score": 0.4187,
+      "risk_level": "safe",
+      "is_eat": false,
+      "is_flagged": false
+    },
+    {
+      "token": " a",
+      "position": 10,
+      "hallucination_score": 0.3624,
+      "risk_level": "safe",
+      "is_eat": false,
+      "is_flagged": false
+    },
+    {
+      "token": " wealthy",
+      "position": 11,
+      "hallucination_score": 0.3625,
+      "risk_level": "safe",
+      "is_eat": false,
+      "is_flagged": false
+    },
+    {
+      "token": " woman",
+      "position": 12,
+      "hallucination_score": 0.4297,
+      "risk_level": "safe",
+      "is_eat": false,
+      "is_flagged": false
+    },
+    {
+      "token": ".",
+      "position": 13,
+      "hallucination_score": 0.3703,
+      "risk_level": "safe",
+      "is_eat": false,
+      "is_flagged": false
+    },
+    {
+      "token": " He",
+      "position": 14,
+      "hallucination_score": 0.2122,
+      "risk_level": "safe",
+      "is_eat": false,
+      "is_flagged": false
+    },
+    {
+      "token": " was",
+      "position": 15,
+      "hallucination_score": 0.3435,
+      "risk_level": "safe",
+      "is_eat": false,
+      "is_flagged": false
+    },
+    {
+      "token": " the",
+      "position": 16,
+      "hallucination_score": 0.3414,
+      "risk_level": "safe",
+      "is_eat": false,
+      "is_flagged": false
+    },
+    {
+      "token": " grandson",
+      "position": 17,
+      "hallucination_score": 0.3119,
+      "risk_level": "safe",
+      "is_eat": false,
+      "is_flagged": false
+    },
+    {
+      "token": " of",
+      "position": 18,
+      "hallucination_score": 0.3864,
+      "risk_level": "safe",
+      "is_eat": false,
+      "is_flagged": false
+    },
+    {
+      "token": " Napoleon",
+      "position": 19,
+      "hallucination_score": 0.3166,
+      "risk_level": "safe",
+      "is_eat": true,
+      "is_flagged": false
+    }
+  ]
+}
